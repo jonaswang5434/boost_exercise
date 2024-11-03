@@ -1,6 +1,13 @@
 # boost_exercise
 # install boost in ubuntu <br> run:
-`sudo apt-get install libboost-all-dev`
+### 1、install bzip2
+`sudo apt update` <br>
+`sudo apt install bzip2`
+### 2、download the last boost file from boost website. <br>
+`https://www.boost.org/users/download/`
+### 3、In the directory where you want to put the Boost installation, execute <br>
+`tar --bzip2 -xf /path/to/boost_1_61_0.tar.bz2`
+
 # install in windows 
 ### configure by vs code :
 Just for execute cpp file,need add library directory in args.

@@ -1,3 +1,6 @@
+## Check for Available G++ Versions:
+`apt search '^g\+\+-[0-9]+$'`
+
 # boost_exercise
 # install boost in ubuntu <br> run:
 ### 1、install bzip2

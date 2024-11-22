@@ -17,7 +17,7 @@ int main(int argc,char* argv[])
         tcp::resolver resolver(io_context);
         // resolver.resolve: takes host name and service name,and turns them into a list of endpoints.
         //  server name is  specified in arg[1],service name is "daytime"
-        tcp::resolver::results_type endpoints=resolver.resolve(argv[1],"daytime");
+        tcp::resolver::results_type endpoints=resolver.resolve("localhost","daytime");
         // create and connect the socket. the list of endpoints obtained above may contain both ipv4 and ipv6 endpoints,
         // so we need to try each of them until we find one that works.
         // this keeps the client program idependent of a specific Ip version.

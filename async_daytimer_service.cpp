@@ -37,7 +37,7 @@ public:
 
     boost::asio::async_write(socket_, boost::asio::buffer(message_), //async_write:将数据从buffer写入socker_
         //shared_from_this():来自于boost::enable_shared_from_this，当继承该类时，即可使用该函数，确保返回的share_pointer和原始的share_pointer共享引用同一个对象
-        boost::bind(&tcp_connection::handle_write, shared_from_this(),   //shared_from_this，传入当前对象的指针，
+        boost::bind(&tcp_connection::handle_write, shared_from_this(),   //shared_from_this，确保tcp_connection对象在异步完成前不会被销毁。
           boost::asio::placeholders::error,                   // 占位符，表示操作完成后的错误信息
           boost::asio::placeholders::bytes_transferred)); //bytes_transferred:表示写入的字节数
   }

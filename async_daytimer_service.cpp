@@ -19,14 +19,14 @@ class tcp_connection
 : public boost::enable_shared_from_this<tcp_connection>      //为了可以使用共享指针 shared_ptr ;允许类对象在其成员函数中通过 shared_from_this() 来获得指向自身的 shared_ptr
 {
 public:
-  typedef boost::shared_ptr<tcp_connection> pointer;
+  typedef boost::shared_ptr<tcp_connection> pointer; // 声明一个tcp_connection类型的共享指针，在多处使用
 
   static pointer create(boost::asio::io_context& io_context)
   {
     return pointer(new tcp_connection(io_context));
   }
 
-  tcp::socket& socket()
+  tcp::socket& socket()    // 一个成员函数，返回私有变量socket_
   {
     return socket_;
   }
@@ -35,10 +35,11 @@ public:
   {
     message_ = make_daytime_string();
 
-    boost::asio::async_write(socket_, boost::asio::buffer(message_),
-        boost::bind(&tcp_connection::handle_write, shared_from_this(),
-          boost::asio::placeholders::error,
-          boost::asio::placeholders::bytes_transferred));
+    boost::asio::async_write(socket_, boost::asio::buffer(message_), //async_write:将数据从buffer写入socker_
+        //shared_from_this():来自于boost::enable_shared_from_this，当继承该类时，即可使用该函数，确保返回的share_pointer和原始的share_pointer共享引用同一个对象
+        boost::bind(&tcp_connection::handle_write, shared_from_this(),   //shared_from_this，传入当前对象的指针，
+          boost::asio::placeholders::error,                   // 占位符，表示操作完成后的错误信息
+          boost::asio::placeholders::bytes_transferred)); //bytes_transferred:表示写入的字节数
   }
 
 private:
@@ -72,8 +73,8 @@ private:
     tcp_connection::pointer new_connection =
       tcp_connection::create(io_context_);
 
-    acceptor_.async_accept(new_connection->socket(),
-        boost::bind(&tcp_server::handle_accept, this, new_connection,
+    acceptor_.async_accept(new_connection->socket(), // 当新连接到达时，会接受这个新连接，然后调用后面的bind绑定的函数进行处理
+        boost::bind(&tcp_server::handle_accept, this, new_connection, // this 表示绑定到当前对象实例上
           boost::asio::placeholders::error));
   }
 
